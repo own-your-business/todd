@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franchise Investment Pathway | Todd Weiss, CFA</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js CDN for financial charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0B192C',
+                            900: '#070F1E',
+                            950: '#030712',
+                        },
+                        gold: {
+                            400: '#F3C623',
+                            500: '#E0A96D',
+                            600: '#D4A373',
+                            700: '#B38148',
+                        },
+                        slate: {
+                            850: '#152033'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070F1E;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #F3C623 0%, #E0A96D 50%, #B38148 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-gradient {
+            border-image: linear-gradient(to right, #F3C623, #B38148) 1;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(224, 169, 109, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(224, 169, 109, 0.1);
+        }
+
+        .active-tab {
+            border-color: #E0A96D;
+            color: #E0A96D;
+            background-color: rgba(224, 169, 109, 0.1);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070F1E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E0A96D;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #E0A96D;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(224, 169, 109, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-800 bg-navy-900/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Identity -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center font-bold text-navy-900 text-xl shadow-lg">
+                    TW
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-serif text-lg font-bold tracking-tight text-white">Todd Weiss</span>
+                        <span class="px-2 py-0.5 text-xs font-semibold bg-gold-500/20 text-gold-400 rounded border border-gold-500/30">CFA</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Weiss Franchise Consulting | Ex-Wall Street Analyst</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#roadmap" class="text-slate-300 hover:text-gold-400 transition-colors">Investment Roadmap</a>
+                <a href="#calculator" class="text-slate-300 hover:text-gold-400 transition-colors">Yield Calculator</a>
+                <a href="#sectors" class="text-slate-300 hover:text-gold-400 transition-colors">Target Sectors</a>
+                <a href="#about" class="text-slate-300 hover:text-gold-400 transition-colors">Why CFA Edge</a>
+            </nav>
+
+            <!-- Action CTA -->
+            <div class="flex items-center space-x-4">
+                <button onclick="openModal('consultation')" class="relative group overflow-hidden rounded-lg p-0.5 font-medium text-xs sm:text-sm">
+                    <span class="absolute inset-0 bg-gradient-to-r from-gold-500 to-gold-700 rounded-lg"></span>
+                    <span class="relative block px-4 py-2.5 bg-navy-950 rounded-[7px] text-gold-400 group-hover:bg-opacity-0 group-hover:text-navy-950 font-semibold transition-all duration-300">
+                        Book Executive Call
+                    </span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="relative py-16 lg:py-24 overflow-hidden border-b border-slate-800">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800/40 via-navy-900 to-navy-950 pointer-events-none"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <!-- Hero Content -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs font-semibold uppercase tracking-wider">
+                            <i data-lucide="line-chart" class="w-3.5 h-3.5"></i>
+                            <span>Institutional-Grade Franchise Analysis</span>
+                        </div>
+                        
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-white leading-tight">
+                            Evaluate Franchises Like a <span class="gold-gradient-text">Wall Street Analyst</span>
+                        </h1>
+                        
+                        <p class="text-lg text-slate-300 font-light leading-relaxed max-w-2xl">
+                            Move beyond emotional pitches. Leverage 12+ years of Wall Street real estate finance and CFA analytical rigor to identify cash-flowing, semi-absentee franchise investments tailored to your portfolio.
+                        </p>
+
+                        <!-- Key Value Highlights -->
+                        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-slate-800/80">
+                            <div>
+                                <p class="text-2xl font-bold text-white font-serif">$100k+</p>
+                                <p class="text-xs text-slate-400">Min. Liquid Capital</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-white font-serif">100% Free</p>
+                                <p class="text-xs text-slate-400">Advisory to Buyer</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold font-serif gold-gradient-text">Item 19</p>
+                                <p class="text-xs text-slate-400">FDD Financial Audits</p>
+                            </div>
+                        </div>
+
+                        <!-- CTA Group -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <a href="#calculator" class="px-6 py-3.5 rounded-lg bg-gradient-to-r from-gold-500 to-gold-700 text-navy-950 font-bold text-sm shadow-lg hover:shadow-gold-500/20 hover:brightness-110 transition-all text-center flex items-center justify-center space-x-2">
+                                <span>Calculate Franchise Yield</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </a>
+                            <a href="#roadmap" class="px-6 py-3.5 rounded-lg border border-slate-700 text-slate-300 hover:border-gold-500/50 hover:text-gold-400 font-medium text-sm transition-all text-center flex items-center justify-center space-x-2">
+                                <i data-lucide="map" class="w-4 h-4"></i>
+                                <span>Explore 4-Step Pathway</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual Card -->
+                    <div class="lg:col-span-5">
+                        <div class="glass-card rounded-2xl p-6 relative border border-slate-700/50 shadow-2xl">
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                                <div class="flex items-center space-x-3">
+                                    <div class="p-2 rounded-lg bg-navy-800 text-gold-400">
+                                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-white">The CFA Advisory Edge</h3>
+                                        <p class="text-xs text-slate-400">Risk-Adjusted Return Framework</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-mono">FINANCE-FIRST</span>
+                            </div>
+
+                            <div class="space-y-4 py-4 text-sm">
+                                <div class="flex items-start space-x-3 p-3 rounded-lg bg-navy-900/60 border border-slate-800">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <strong class="text-white block">Item 19 FDD EBITDA Audits</strong>
+                                        <span class="text-xs text-slate-400">We dissect actual unit performance, gross margin structures, and franchisor fees.</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3 p-3 rounded-lg bg-navy-900/60 border border-slate-800">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <strong class="text-white block">Semi-Absentee & Executive Models</strong>
+                                        <span class="text-xs text-slate-400">Keep your corporate day job while building cash-flowing equity in B2B or wellness.</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3 p-3 rounded-lg bg-navy-900/60 border border-slate-800">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <strong class="text-white block">Tax & Capital Optimization</strong>
+                                        <span class="text-xs text-slate-400">Leverage ROBS (401k rollover penalty-free) or SBA 7(a) financing strategies.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onclick="openModal('fdd')" class="w-full py-3 bg-navy-800 hover:bg-slate-800 text-gold-400 border border-gold-500/30 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all flex items-center justify-center space-x-2">
+                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                <span>Request FDD Evaluation Template</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-semibold tracking-widest text-gold-400 uppercase mb-2">Step-By-Step Investment Journey</h2>
+                <p class="text-3xl sm:text-4xl font-serif font-bold text-white">The Franchise Acquisition Pathway</p>
+                <p class="text-slate-400 mt-3 text-sm sm:text-base">
+                    From initial capital assessment to multi-unit scaling—a structured financial approach guided by Todd Weiss, CFA.
+                </p>
+            </div>
+
+            <!-- Roadmap Phase Navigation Tabs -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                <button onclick="setRoadmapPhase(1)" id="phase-tab-1" class="phase-tab active-tab p-4 rounded-xl border text-left transition-all">
+                    <span class="text-xs font-mono text-gold-400 block mb-1">PHASE 01</span>
+                    <strong class="text-sm font-semibold text-white block">Financial Discovery</strong>
+                    <span class="text-xs text-slate-400 hidden sm:block">Liquidity & Goal Mapping</span>
+                </button>
+                <button onclick="setRoadmapPhase(2)" id="phase-tab-2" class="phase-tab p-4 rounded-xl border border-slate-800 text-left transition-all hover:border-slate-700">
+                    <span class="text-xs font-mono text-slate-400 block mb-1">PHASE 02</span>
+                    <strong class="text-sm font-semibold text-white block">FDD & Portfolio Match</strong>
+                    <span class="text-xs text-slate-400 hidden sm:block">Item 19 EBITDA Analysis</span>
+                </button>
+                <button onclick="setRoadmapPhase(3)" id="phase-tab-3" class="phase-tab p-4 rounded-xl border border-slate-800 text-left transition-all hover:border-slate-700">
+                    <span class="text-xs font-mono text-slate-400 block mb-1">PHASE 03</span>
+                    <strong class="text-sm font-semibold text-white block">Validation & Funding</strong>
+                    <span class="text-xs text-slate-400 hidden sm:block">Owner Calls & Discovery Day</span>
+                </button>
+                <button onclick="setRoadmapPhase(4)" id="phase-tab-4" class="phase-tab p-4 rounded-xl border border-slate-800 text-left transition-all hover:border-slate-700">
+                    <span class="text-xs font-mono text-slate-400 block mb-1">PHASE 04</span>
+                    <strong class="text-sm font-semibold text-white block">Launch & Scaling</strong>
+                    <span class="text-xs text-slate-400 hidden sm:block">Site Selection & Multi-Unit</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Phase Content Panel -->
+            <div id="roadmap-content" class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-800">
+                <!-- Javascript will inject Phase details here dynamically -->
+            </div>
+        </section>
+
+        <section id="calculator" class="py-20 bg-navy-900/60 border-t border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-gold-500/10 text-gold-400 text-xs font-semibold mb-3">
+                        <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                        <span>Interactive Financial Modeling</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Franchise Yield & ROI Calculator</h2>
+                    <p class="text-slate-400 mt-2 text-sm sm:text-base">
+                        Simulate unit-level economics, cash-on-cash yield, and SBA loan debt service tailored to your target investment range.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    <!-- Calculator Controls Panel -->
+                    <div class="lg:col-span-5 glass-card rounded-2xl p-6 border border-slate-800 space-y-6">
+                        <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+                            <h3 class="font-bold text-white text-base flex items-center space-x-2">
+                                <i data-lucide="sliders" class="w-4 h-4 text-gold-400"></i>
+                                <span>Investment Parameters</span>
+                            </h3>
+                            <button onclick="resetCalculator()" class="text-xs text-gold-400 hover:underline">Reset Defaults</button>
+                        </div>
+
+                        <!-- Parameter 1: Total Investment -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label class="text-slate-300 font-medium">Total Franchise Capital Required</label>
+                                <span class="font-bold text-gold-400 font-mono" id="val-total-inv">$350,000</span>
+                            </div>
+                            <input type="range" id="input-total-inv" min="100000" max="1500000" step="25000" value="350000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" oninput="updateCalculator()">
+                            <p class="text-[11px] text-slate-500 mt-1">Includes initial franchise fee, build-out, equipment & working capital.</p>
+                        </div>
+
+                        <!-- Parameter 2: Liquid Capital vs Loan -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label class="text-slate-300 font-medium">Liquid Cash Equity (Down Payment)</label>
+                                <span class="font-bold text-gold-400 font-mono" id="val-liquid-cash">$105,000 (30%)</span>
+                            </div>
+                            <input type="range" id="input-liquid-pct" min="15" max="100" step="5" value="30" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" oninput="updateCalculator()">
+                        </div>
+
+                        <!-- Parameter 3: Estimated Annual Gross Revenue -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label class="text-slate-300 font-medium">Est. Annual Unit Gross Revenue</label>
+                                <span class="font-bold text-gold-400 font-mono" id="val-gross-rev">$950,000</span>
+                            </div>
+                            <input type="range" id="input-gross-rev" min="300000" max="3000000" step="50000" value="950000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" oninput="updateCalculator()">
+                        </div>
+
+                        <!-- Parameter 4: Royalty + Marketing Fee % -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label class="text-slate-300 font-medium">Franchisor Fees (Royalty + Ad Fund)</label>
+                                <span class="font-bold text-white font-mono" id="val-royalty-pct">8.0%</span>
+                            </div>
+                            <input type="range" id="input-royalty-pct" min="4" max="12" step="0.5" value="8" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" oninput="updateCalculator()">
+                        </div>
+
+                        <!-- Parameter 5: EBITDA Margin % -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label class="text-slate-300 font-medium">Target EBITDA Margin %</label>
+                                <span class="font-bold text-white font-mono" id="val-ebitda-pct">18.0%</span>
+                            </div>
+                            <input type="range" id="input-ebitda-pct" min="10" max="30" step="1" value="18" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer" oninput="updateCalculator()">
+                            <p class="text-[11px] text-slate-500 mt-1">Pre-debt operating profit margin typical for concept type.</p>
+                        </div>
+
+                        <!-- Toggle: Multi-Unit Scaler -->
+                        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+                            <div>
+                                <strong class="text-sm font-semibold text-white block">Multi-Unit Scaler</strong>
+                                <span class="text-xs text-slate-400">Model multi-unit semi-absentee growth</span>
+                            </div>
+                            <select id="input-units" onchange="updateCalculator()" class="bg-navy-950 border border-slate-700 text-gold-400 text-sm rounded-lg px-3 py-1.5 focus:border-gold-500 outline-none font-semibold">
+                                <option value="1">1 Unit</option>
+                                <option value="2">2 Units</option>
+                                <option value="3" selected>3 Units</option>
+                                <option value="5">5 Units</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Output Results & Chart -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Key Output Metric Cards -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            <div class="glass-card rounded-xl p-4 border border-slate-800">
+                                <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Annual Net EBITDA</p>
+                                <p class="text-xl sm:text-2xl font-bold font-serif text-white" id="res-ebitda">$513,000</p>
+                                <span class="text-[11px] text-slate-500">Operating profit pre-debt</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-4 border border-slate-800">
+                                <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Annual Debt Service</p>
+                                <p class="text-xl sm:text-2xl font-bold font-serif text-slate-300" id="res-debt">$98,750</p>
+                                <span class="text-[11px] text-slate-500">Est. 10-Yr SBA 7(a) loan</span>
+                            </div>
+
+                            <div class="glass-card rounded-xl p-4 border border-gold-500/30 bg-gold-500/5 col-span-2 sm:col-span-1">
+                                <p class="text-xs text-gold-400 uppercase tracking-wider font-semibold mb-1">Net Annual Cash Flow</p>
+                                <p class="text-xl sm:text-2xl font-bold font-serif gold-gradient-text" id="res-net-cash">$414,250</p>
+                                <span class="text-[11px] text-gold-500/80">Owner net distribution</span>
+                            </div>
+                        </div>
+
+                        <!-- ROI Highlight Banner -->
+                        <div class="glass-card rounded-xl p-5 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 flex-shrink-0">
+                                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block uppercase font-medium">Projected Cash-On-Cash Return</span>
+                                    <span class="text-2xl sm:text-3xl font-bold font-serif text-white" id="res-coc-return">131.5%</span>
+                                </div>
+                            </div>
+
+                            <div class="text-right border-t sm:border-t-0 sm:border-l border-slate-800 pt-3 sm:pt-0 sm:pl-6 w-full sm:w-auto">
+                                <span class="text-xs text-slate-400 block">Est. Capital Payback Period</span>
+                                <span class="text-lg font-bold text-gold-400 font-mono" id="res-payback">~14 Months</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart Visualizing Projections -->
+                        <div class="glass-card rounded-xl p-5 border border-slate-800">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-sm font-semibold text-white flex items-center space-x-2">
+                                    <i data-lucide="bar-chart-3" class="w-4 h-4 text-gold-400"></i>
+                                    <span>5-Year Cumulative Yield Projection</span>
+                                </h4>
+                                <span class="text-xs text-slate-400">Post-Debt Net Cash Flow</span>
+                            </div>
+                            <div class="h-64">
+                                <canvas id="yieldChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- CTA to Lock In Financial Review -->
+                        <div class="p-4 rounded-xl bg-slate-850 border border-slate-800 flex items-center justify-between">
+                            <p class="text-xs text-slate-300">
+                                Want Todd to run these numbers against actual Item 19 FDD data for a specific brand?
+                            </p>
+                            <button onclick="openModal('fdd')" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-navy-950 text-xs font-bold rounded-lg transition-all flex-shrink-0 ml-4">
+                                Review FDD Item 19
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sectors" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-semibold tracking-widest text-gold-400 uppercase mb-2">Curated Portfolio Categories</h2>
+                <p class="text-3xl sm:text-4xl font-serif font-bold text-white">Target High-Performing Sectors</p>
+                <p class="text-slate-400 mt-3 text-sm sm:text-base">
+                    Todd specializes in non-food, high-margin, semi-absentee, and B2B essential franchise models.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Sector 1: B2B & Essential Services -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-gold-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-6">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">B2B & IT Services</h3>
+                        <p class="text-xs text-gold-400 font-mono mb-4">E.g., TeamLogic IT, Cost Reduction Services</p>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-6">
+                            High recurring revenue models targeting corporate clients. Minimal inventory, standard business hours (M-F), and strong multi-unit expansion potential.
+                        </p>
+                    </div>
+                    <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-800">
+                        <li class="flex items-center space-x-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold-400"></i>
+                            <span>Liquid Capital: $100k - $250k</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold-400"></i>
+                            <span>Semi-Absentee / Executive Owner</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sector 2: Health, Fitness & Wellness -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-gold-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Fitness & Wellness Concepts</h3>
+                        <p class="text-xs text-gold-400 font-mono mb-4">Boutique Fitness, Cryo, Stretching Studios</p>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-6">
+                            Membership-driven predictable monthly cash flow. Managed by on-site studio managers while investors oversee KPIs and financial performance.
+                        </p>
+                    </div>
+                    <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-800">
+                        <li class="flex items-center space-x-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold-400"></i>
+                            <span>Liquid Capital: $150k - $350k</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold-400"></i>
+                            <span>High Cash-on-Cash Return Yield</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sector 3: Home & Commercial Services -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-gold-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-6">
+                            <i data-lucide="home" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Essential Property Services</h3>
+                        <p class="text-xs text-gold-400 font-mono mb-4">Restoration, Insulation, HVAC, Roofing</p>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-6">
+                            Recession-resilient essential services. Low real estate overhead, fast start-up timelines, and recession-proof consumer/commercial demand.
+                        </p>
+                    </div>
+                    <ul class="text-xs text-slate-400 space-y-2 pt-4 border-t border-slate-800">
+                        <li class="flex items-center space-x-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold-400"></i>
+                            <span>Liquid Capital: $80k - $180k</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-gold-400"></i>
+                            <span>Scalable Van/Fleet Based Model</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-navy-900/60 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-5 relative">
+                        <!-- Founder Profile Card -->
+                        <div class="glass-card rounded-2xl p-8 border border-slate-700/60 relative">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-gold-500 to-gold-700 p-1 mb-6 shadow-xl">
+                                <div class="w-full h-full bg-navy-950 rounded-[14px] flex items-center justify-center font-serif text-3xl font-bold text-gold-400">
+                                    TW
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-serif font-bold text-white">Todd Weiss, CFA</h3>
+                            <p class="text-gold-400 text-sm font-medium mb-4">Franchise Investment Advisor & Consultant</p>
+                            
+                            <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                                Former Wall Street Real Estate Finance professional with 12+ years of institutional analysis experience. Former multi-unit fitness franchise owner who has navigated every phase from lease negotiation to EBITDA optimization.
+                            </p>
+
+                            <div class="space-y-3 pt-4 border-t border-slate-800 text-xs text-slate-400">
+                                <div class="flex items-center space-x-3">
+                                    <i data-lucide="award" class="w-4 h-4 text-gold-400"></i>
+                                    <span>Chartered Financial Analyst (CFA®) Charterholder</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i data-lucide="building-2" class="w-4 h-4 text-gold-400"></i>
+                                    <span>The Franchise Consulting Company Partner</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i data-lucide="linkedin" class="w-4 h-4 text-gold-400"></i>
+                                    <a href="https://www.linkedin.com/in/toddweisscfa/" target="_blank" class="text-gold-400 hover:underline">Connect on LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 space-y-6">
+                        <h2 class="text-xs font-semibold tracking-widest text-gold-400 uppercase">Unbiased Advisory</h2>
+                        <h3 class="text-3xl sm:text-4xl font-serif font-bold text-white">Why Work With a CFA Franchise Consultant?</h3>
+                        
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            Most franchise brokers focus on sales pitches. As a CFA charterholder, my obligation and methodology center on institutional financial analysis, risk mitigation, and realistic return modeling.
+                        </p>
+
+                        <div class="grid sm:grid-cols-2 gap-6 pt-4">
+                            <div class="p-4 rounded-xl bg-navy-950 border border-slate-800">
+                                <i data-lucide="pie-chart" class="w-6 h-6 text-gold-400 mb-2"></i>
+                                <h4 class="font-bold text-white text-sm mb-1">Financial Rigor First</h4>
+                                <p class="text-xs text-slate-400">We analyze unit economics, royalty drag, and territory demographics before shortlisting brands.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-navy-950 border border-slate-800">
+                                <i data-lucide="dollar-sign" class="w-6 h-6 text-gold-400 mb-2"></i>
+                                <h4 class="font-bold text-white text-sm mb-1">Zero Cost To You</h4>
+                                <p class="text-xs text-slate-400">Franchisors pay advisory fees out of their standard marketing budgets. Your franchise fee remains identical.</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <button onclick="openModal('consultation')" class="px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 to-gold-700 text-navy-950 font-bold text-sm shadow-xl hover:brightness-110 transition-all flex items-center space-x-2">
+                                <span>Schedule Private 1-on-1 Strategy Session</span>
+                                <i data-lucide="calendar" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-navy-950 border-t border-slate-800 py-12 text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-gold-500/20 text-gold-400 font-bold flex items-center justify-center font-serif">
+                    TW
+                </div>
+                <div>
+                    <span class="text-slate-300 font-semibold block">Todd Weiss, CFA</span>
+                    <span>Weiss Franchise Consulting & The Franchise Consulting Company</span>
+                </div>
+            </div>
+
+            <p class="text-center sm:text-right text-slate-500">
+                &copy; <span id="year-span">2026</span> Todd Weiss, CFA. All financial calculations are estimates for educational modeling purposes.
+            </p>
+        </div>
+    </footer>
+
+    <div id="modal-backdrop" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div id="modal-card" class="glass-card max-w-lg w-full rounded-2xl p-6 sm:p-8 border border-slate-700 relative shadow-2xl animate-fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Dynamic Modal Content Injection -->
+            <div id="modal-body">
+                <!-- Javascript populates modal content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set current year
+        document.getElementById('year-span').innerText = new Date().getFullYear();
+
+        // Lucide Icons Initialization
+        lucide.createIcons();
+
+        // Roadmap Data Structure
+        const roadmapData = {
+            1: {
+                title: "Phase 1: Financial Assessment & Goals Mapping",
+                tag: "FOUNDATION",
+                icon: "wallet",
+                description: "Before reviewing franchise concepts, we evaluate your balance sheet, liquid capital available, and desired involvement level.",
+                steps: [
+                    { title: "Liquid Capital Audit", desc: "Identify $100k+ in unencumbered liquidity (cash, stocks, HELOC, or 401k ROBS eligible funds)." },
+                    { title: "Net Worth Pre-Screen", desc: "Verify total net worth ($300k - $1M+) required for franchisor approval and SBA loan underwriting." },
+                    { title: "Operator Profile Selection", desc: "Choose between Owner-Operator (Full Time) or Semi-Absentee (Executive / Manager Run)." }
+                ],
+                cfaInsight: "CFA Insight: ROBS (Roll Overs for Business Startups) allows you to use 401k/IRA funds tax-free and penalty-free without taking on debt."
+            },
+            2: {
+                title: "Phase 2: Portfolio Selection & FDD Item 19 Analysis",
+                tag: "DUE DILIGENCE",
+                icon: "file-search",
+                description: "We match you with 3 to 4 vetted franchise brands matching your financial profile and run institutional financial audits.",
+                steps: [
+                    { title: "Territory Demographics", desc: "Analyze territory availability, median household income, and population density for target markets." },
+                    { title: "Item 19 EBITDA Audit", desc: "Dissect gross sales, cost of goods, labor margins, and median unit EBITDA disclosed in the Franchise Disclosure Document." },
+                    { title: "Royalty & Overhead Modeling", desc: "Model total fee impact (5-8% royalties, 1-2% ad funds, tech fees) against operating margins." }
+                ],
+                cfaInsight: "CFA Insight: Item 19 varies wildly between brands. We benchmark disclosed top-quartile vs. median unit performance to gauge risk parameters."
+            },
+            3: {
+                title: "Phase 3: Validation & Discovery",
+                tag: "VERIFICATION",
+                icon: "users",
+                description: "Direct peer validation with existing franchise owners and formal executive meeting with franchisor leadership.",
+                steps: [
+                    { title: "Existing Owner Calls", desc: "Private, unscripted interviews with 5-10 active franchisees regarding actual profits and franchisor support." },
+                    { title: "SBA Loan Pre-Approval", desc: "Work with premier franchise lenders to secure 10-year term SBA 7(a) financing pre-approval." },
+                    { title: "Discovery Day", desc: "Meet corporate executive teams at headquarters or virtually for final mutual evaluation." }
+                ],
+                cfaInsight: "CFA Insight: Validation calls are where truth emerges. We equip you with specific financial questions to ask active franchisees."
+            },
+            4: {
+                title: "Phase 4: Franchise Agreement & Multi-Unit Launch",
+                tag: "EXECUTION & SCALE",
+                icon: "rocket",
+                description: "Executing the agreement, securing physical site or fleet, undergoing training, and building multi-unit equity.",
+                steps: [
+                    { title: "FDD Review & Execution", desc: "Review agreement with a specialized franchise attorney before signing." },
+                    { title: "Site Selection & Build-Out", desc: "Leverage franchisor real estate algorithms and commercial brokers to secure premier locations." },
+                    { title: "Multi-Unit Scalability", desc: "Implement management systems to scale from 1 unit to 3+ units within 24-36 months." }
+                ],
+                cfaInsight: "CFA Insight: Semi-absentee scaling creates enterprise value. Reinvesting initial cash flow into additional units dramatically accelerates total ROI."
+            }
+        };
+
+        // Render Roadmap Phase Function
+        function setRoadmapPhase(phaseNum) {
+            // Update Active Tab Styling
+            document.querySelectorAll('.phase-tab').forEach((tab, idx) => {
+                if (idx + 1 === phaseNum) {
+                    tab.classList.add('active-tab');
+                    tab.classList.remove('border-slate-800');
+                } else {
+                    tab.classList.remove('active-tab');
+                    tab.classList.add('border-slate-800');
+                }
+            });
+
+            const p = roadmapData[phaseNum];
+            const contentDiv = document.getElementById('roadmap-content');
+
+            contentDiv.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-6 border-b border-slate-800">
+                    <div>
+                        <span class="text-xs font-mono text-gold-400 font-bold uppercase tracking-wider px-2 py-1 rounded bg-gold-500/10 border border-gold-500/20 mb-2 inline-block">${p.tag}</span>
+                        <h3 class="text-2xl font-serif font-bold text-white">${p.title}</h3>
+                        <p class="text-sm text-slate-300 mt-1">${p.description}</p>
+                    </div>
+                    <button onclick="openModal('consultation')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gold-400 text-xs font-semibold rounded-lg border border-slate-700 transition-all flex-shrink-0">
+                        Discuss Phase ${phaseNum} with Todd
+                    </button>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    ${p.steps.map((step, idx) => `
+                        <div class="p-4 rounded-xl bg-navy-950/80 border border-slate-800/80 hover:border-slate-700 transition-all">
+                            <span class="w-6 h-6 rounded-full bg-slate-800 text-gold-400 text-xs font-bold flex items-center justify-center mb-3">0${idx+1}</span>
+                            <h4 class="font-bold text-white text-sm mb-2">${step.title}</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">${step.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="p-4 rounded-xl bg-gold-500/5 border border-gold-500/20 flex items-start space-x-3 text-xs text-slate-300">
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <strong class="text-gold-400 block font-semibold mb-0.5">CFA Wall Street Perspective</strong>
+                        <span>${p.cfaInsight}</span>
+                    </div>
+                </div>
+            `;
+
+            lucide.createIcons();
+        }
+
+        // Initialize Roadmap on Phase 1
+        setRoadmapPhase(1);
+
+        // Chart.js Setup for Yield Chart
+        let yieldChart;
+
+        function initChart() {
+            const ctx = document.getElementById('yieldChart').getContext('2d');
+            yieldChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    datasets: [{
+                        label: 'Cumulative Net Cash Flow ($)',
+                        data: [0, 0, 0, 0, 0],
+                        backgroundColor: 'rgba(224, 169, 109, 0.85)',
+                        borderColor: '#E0A96D',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '$' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: '#94A3B8',
+                                callback: function(value) { return '$' + (value / 1000) + 'k'; }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        },
+                        x: {
+                            ticks: { color: '#94A3B8' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Calculator Calculation Logic
+        function updateCalculator() {
+            // Read Inputs
+            const totalInv = parseFloat(document.getElementById('input-total-inv').value);
+            const liquidPct = parseFloat(document.getElementById('input-liquid-pct').value);
+            const unitGrossRev = parseFloat(document.getElementById('input-gross-rev').value);
+            const royaltyPct = parseFloat(document.getElementById('input-royalty-pct').value);
+            const ebitdaPct = parseFloat(document.getElementById('input-ebitda-pct').value);
+            const unitCount = parseInt(document.getElementById('input-units').value);
+
+            // Calculate Derived Values
+            const liquidCash = totalInv * (liquidPct / 100);
+            const loanAmount = totalInv - liquidCash;
+
+            // Display Inputs Text
+            document.getElementById('val-total-inv').innerText = '$' + (totalInv * unitCount).toLocaleString() + (unitCount > 1 ? ` (${unitCount} Units)` : '');
+            document.getElementById('val-liquid-cash').innerText = '$' + (liquidCash * unitCount).toLocaleString() + ` (${liquidPct}%)`;
+            document.getElementById('val-gross-rev').innerText = '$' + (unitGrossRev * unitCount).toLocaleString();
+            document.getElementById('val-royalty-pct').innerText = royaltyPct.toFixed(1) + '%';
+            document.getElementById('val-ebitda-pct').innerText = ebitdaPct.toFixed(1) + '%';
+
+            // Financial Calculations
+            // Total Gross EBITDA = (Gross Revenue * EBITDA Margin) - Royalty Fee impact
+            const annualGrossRev = unitGrossRev * unitCount;
+            const netEbitdaMargin = (ebitdaPct - royaltyPct) / 100;
+            const annualEbitda = annualGrossRev * (ebitdaPct / 100);
+
+            // Annual Debt Service Calculation (SBA 7(a) 10 Year Loan @ ~10.5% Interest)
+            // Monthly payment approx formula for 10 yr at 10.5%: Loan * 0.0135 * 12
+            const totalLoan = loanAmount * unitCount;
+            const annualDebtService = totalLoan > 0 ? (totalLoan * 0.135) : 0;
+
+            const netAnnualCashFlow = Math.max(0, annualEbitda - annualDebtService);
+
+            // Cash-on-Cash Return = (Net Annual Cash Flow / Total Liquid Cash Equity Out of Pocket) * 100
+            const totalLiquidCashOut = liquidCash * unitCount;
+            const cashOnCashReturn = totalLiquidCashOut > 0 ? (netAnnualCashFlow / totalLiquidCashOut) * 100 : 0;
+
+            // Payback Period (Months)
+            const paybackMonths = netAnnualCashFlow > 0 ? Math.round((totalLiquidCashOut / netAnnualCashFlow) * 12) : 0;
+
+            // Update DOM Outputs
+            document.getElementById('res-ebitda').innerText = '$' + Math.round(annualEbitda).toLocaleString();
+            document.getElementById('res-debt').innerText = '$' + Math.round(annualDebtService).toLocaleString();
+            document.getElementById('res-net-cash').innerText = '$' + Math.round(netAnnualCashFlow).toLocaleString();
+            document.getElementById('res-coc-return').innerText = cashOnCashReturn.toFixed(1) + '%';
+            document.getElementById('res-payback').innerText = paybackMonths > 0 ? `~${paybackMonths} Months` : 'N/A';
+
+            // Update Chart Data (5-year cumulative cash flow)
+            if (yieldChart) {
+                const year1 = netAnnualCashFlow * 0.6; // Year 1ramp-up (60%)
+                const year2 = year1 + netAnnualCashFlow * 0.9;
+                const year3 = year2 + netAnnualCashFlow;
+                const year4 = year3 + netAnnualCashFlow * 1.05;
+                const year5 = year4 + netAnnualCashFlow * 1.1;
+
+                yieldChart.data.datasets[0].data = [
+                    Math.round(year1),
+                    Math.round(year2),
+                    Math.round(year3),
+                    Math.round(year4),
+                    Math.round(year5)
+                ];
+                yieldChart.update();
+            }
+        }
+
+        function resetCalculator() {
+            document.getElementById('input-total-inv').value = 350000;
+            document.getElementById('input-liquid-pct').value = 30;
+            document.getElementById('input-gross-rev').value = 950000;
+            document.getElementById('input-royalty-pct').value = 8;
+            document.getElementById('input-ebitda-pct').value = 18;
+            document.getElementById('input-units').value = 3;
+            updateCalculator();
+        }
+
+        // Modal Functionality
+        function openModal(type) {
+            const backdrop = document.getElementById('modal-backdrop');
+            const body = document.getElementById('modal-body');
+
+            if (type === 'consultation') {
+                body.innerHTML = `
+                    <div class="text-center mb-6">
+                        <span class="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="calendar" class="w-6 h-6"></i>
+                        </span>
+                        <h3 class="text-2xl font-serif font-bold text-white">Schedule Private Advisory Call</h3>
+                        <p class="text-xs text-slate-400 mt-1">1-on-1 Franchise Investment Strategy Session with Todd Weiss, CFA</p>
+                    </div>
+
+                    <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name *</label>
+                            <input type="text" required placeholder="John Doe" class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-gold-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Work Email *</label>
+                            <input type="email" required placeholder="john@company.com" class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-gold-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Available Liquid Capital *</label>
+                            <select required class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-gold-400 focus:border-gold-500 outline-none">
+                                <option value="">Select Liquid Capital</option>
+                                <option value="100k-250k">$100,000 - $250,000</option>
+                                <option value="250k-500k">$250,000 - $500,000</option>
+                                <option value="500k+">$500,000+</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Investment Role Preference</label>
+                            <select class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 focus:border-gold-500 outline-none">
+                                <option value="semi-absentee">Semi-Absentee (Keep Corporate Day Job)</option>
+                                <option value="full-time">Full-Time Owner / Operator</option>
+                                <option value="multi-unit">Multi-Unit Regional Investor</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-gradient-to-r from-gold-500 to-gold-700 text-navy-950 font-bold text-sm rounded-lg hover:brightness-110 transition-all mt-2">
+                            Request Confidential Discovery Call
+                        </button>
+                    </form>
+                `;
+            } else if (type === 'fdd') {
+                body.innerHTML = `
+                    <div class="text-center mb-6">
+                        <span class="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="file-text" class="w-6 h-6"></i>
+                        </span>
+                        <h3 class="text-2xl font-serif font-bold text-white">Request Item 19 FDD Audit</h3>
+                        <p class="text-xs text-slate-400 mt-1">Get custom CFA unit economic benchmarks for your target brand</p>
+                    </div>
+
+                    <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name *</label>
+                            <input type="text" required placeholder="Jane Smith" class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-gold-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address *</label>
+                            <input type="email" required placeholder="jane@company.com" class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-gold-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Specific Franchise Brand(s) of Interest</label>
+                            <input type="text" placeholder="e.g. Fitness, TeamLogic IT, Restoration" class="w-full bg-navy-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-gold-500 outline-none">
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-gradient-to-r from-gold-500 to-gold-700 text-navy-950 font-bold text-sm rounded-lg hover:brightness-110 transition-all mt-2">
+                            Download CFA Due Diligence Template
+                        </button>
+                    </form>
+                `;
+            }
+
+            lucide.createIcons();
+            backdrop.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const body = document.getElementById('modal-body');
+            body.innerHTML = `
+                <div class="text-center py-8 space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
+                        <i data-lucide="check-circle" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif font-bold text-white">Request Received</h3>
+                    <p class="text-sm text-slate-300">Thank you. Todd Weiss, CFA will review your financial profile and reach out within 24 hours.</p>
+                    <button onclick="closeModal()" class="px-6 py-2 bg-slate-800 text-gold-400 text-xs font-semibold rounded-lg border border-slate-700 hover:bg-slate-700">
+                        Close Window
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Initialize Calculator and Chart on DOM Load
+        window.onload = function() {
+            initChart();
+            updateCalculator();
+        };
+    </script>
+</body>
+</html>
