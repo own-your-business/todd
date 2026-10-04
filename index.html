@@ -760,8 +760,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Work Email *</label>
-                    <input type="email" id="leadEmail" placeholder="john@company.com" required>
+                    <label>Email Address *</label>
+                    <input type="email" id="leadEmail" placeholder="john@example.com" required>
                 </div>
 
                 <div class="form-group">
@@ -770,8 +770,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>LinkedIn Profile URL</label>
-                    <input type="text" id="leadLinkedin" placeholder="https://linkedin.com/in/yourprofile">
+                    <label>LinkedIn Profile URL *</label>
+                    <input type="text" id="leadLinkedin" placeholder="https://linkedin.com/in/yourprofile" required>
                 </div>
 
                 <div class="form-group">
@@ -845,6 +845,12 @@
             
             const submitBtn = document.getElementById('submitBtn');
             const origText = submitBtn.innerHTML;
+
+            const linkedinVal = document.getElementById('leadLinkedin').value.trim();
+            if (!linkedinVal.toLowerCase().includes('linkedin.com/in/')) {
+                alert('Please enter a valid LinkedIn Profile URL (e.g., https://linkedin.com/in/yourprofile)');
+                return;
+            }
             
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
             submitBtn.disabled = true;
@@ -863,7 +869,7 @@
                 name: document.getElementById('leadName').value,
                 email: document.getElementById('leadEmail').value,
                 phone: phoneVal,
-                linkedin: document.getElementById('leadLinkedin').value,
+                linkedin: linkedinVal,
                 role: document.getElementById('leadRole').value,
                 source: currentSourceTag
             };
